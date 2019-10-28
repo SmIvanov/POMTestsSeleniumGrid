@@ -5,7 +5,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using HomeworkPOM.Extensions;
-
+using OpenQA.Selenium.Remote;
 
 namespace HomeworkPOM
 {
@@ -13,7 +13,7 @@ namespace HomeworkPOM
     public class POMTests
     {
 
-        private ChromeDriver _driver;
+        private RemoteWebDriver _driver;
         private LoginPage _loginPage;
         private RegistrationPage _regPage;
         private RegistrationUser _user;
@@ -21,9 +21,17 @@ namespace HomeworkPOM
         [SetUp]
         public void ClassInit()
         {
-            _driver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            ChromeOptions options = new ChromeOptions();
+
+            options.PlatformName = "windows";
+            options.BrowserVersion = "77.0";
+
+            _driver = new RemoteWebDriver(new Uri("http://192.168.1.103:10608/wd/hub"), options
+                .ToCapabilities(), TimeSpan.FromSeconds(30));
+            _driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(10);
+
             _driver.Manage().Window.Maximize();
-            _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+
 
             _loginPage = new LoginPage(_driver);
             _regPage = new RegistrationPage(_driver);
