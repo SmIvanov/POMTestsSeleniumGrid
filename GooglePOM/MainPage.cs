@@ -4,6 +4,7 @@ namespace HomeworkPOM1.GoogleSearch
 {
     public abstract class MainPage
     {
+
         private IWebDriver _driver;
 
         public MainPage(IWebDriver driver)
